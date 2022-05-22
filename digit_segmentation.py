@@ -196,7 +196,7 @@ with final_box:
                 file_no += 1
             data = Image.fromarray(img)
             data.save(file_name+'_'+file_names[file_no]+str(count)+'.jpg')
-            zipObj.write(file_name+'_'+file_names[file_no]+str(count)+'.jpg',data-)
+            zipObj.write(file_name+'_'+file_names[file_no]+str(count)+'.jpg',data)
             count+=1
         
         zipObj.close()
