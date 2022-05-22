@@ -103,10 +103,11 @@ def bounding(img):
       
   return img, coord_x, coord_xm, coord_y, coord_ym
 
+img = None
 with image_box:
-    img = None
+
     if image:
-        img = cv.imread(image)
+        img = cv.imread(image.name)
         name = image.name
         file_name = name.split('.')[0]
 
