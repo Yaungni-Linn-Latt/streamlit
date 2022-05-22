@@ -131,7 +131,7 @@ with image_box:
             norm_img = cv.normalize(diff_img, None, alpha = 0, beta = 255, norm_type = cv.NORM_MINMAX)
             result_planes.append(norm_img)
 
-            img_shadow_removed = cv.merge(result_planes)
+        img_shadow_removed = cv.merge(result_planes)
 
         img_gray = cv.cvtColor(cv.UMat(img_shadow_removed), cv.COLOR_BGR2GRAY)
 
