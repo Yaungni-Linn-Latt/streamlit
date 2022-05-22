@@ -125,7 +125,7 @@ with image_box:
 
 #         rgb_planes = cv.split(img)
         
-        st.image(cv.UMat(img))
+        st.image(img)
 
 #         for plane in rgb_planes:
 #             dilated_img = cv.dilate(plane, np.ones((dilation,dilation), np.uint8))
