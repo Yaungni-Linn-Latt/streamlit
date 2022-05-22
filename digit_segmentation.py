@@ -106,7 +106,7 @@ def bounding(img):
 with image_box:
     img = None
     if image:
-        img = cv.imread(image.name)
+        img = cv.imread(image)
         name = image.name
         file_name = name.split('.')[0]
 
