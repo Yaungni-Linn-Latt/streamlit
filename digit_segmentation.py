@@ -123,89 +123,91 @@ with image_box:
         result_planes = []
 
         rgb_planes = cv.split(img)
+        
+        st.image(img)
 
-        for plane in rgb_planes:
-            dilated_img = cv.dilate(plane, np.ones((dilation,dilation), np.uint8))
-            bg_img = cv.medianBlur(dilated_img, 7)
-            diff_img = 255 - cv.absdiff(plane, bg_img)
-            norm_img = cv.normalize(diff_img, None, alpha = 0, beta = 255, norm_type = cv.NORM_MINMAX)
-            result_planes.append(norm_img)
+#         for plane in rgb_planes:
+#             dilated_img = cv.dilate(plane, np.ones((dilation,dilation), np.uint8))
+#             bg_img = cv.medianBlur(dilated_img, 7)
+#             diff_img = 255 - cv.absdiff(plane, bg_img)
+#             norm_img = cv.normalize(diff_img, None, alpha = 0, beta = 255, norm_type = cv.NORM_MINMAX)
+#             result_planes.append(norm_img)
 
-        img_shadow_removed = cv.merge(result_planes)
+#         img_shadow_removed = cv.merge(result_planes)
 
-        img_gray = cv.cvtColor(cv.UMat(img_shadow_removed), cv.COLOR_BGR2GRAY)
-
-
-        ret,img_thres = cv.threshold(img_gray,thresh,255, cv.THRESH_BINARY_INV)
-
-        img_thres = cv.medianBlur(img_thres,blur)
-        # img_thres4=img_dilation = cv.dilate(img_thres4, np.ones((2,2), np.uint8), iterations=1)
-
-        img_thres = rotate(img_thres,degree)
-
-        img_bounded_final, x, xm, y, ym = bounding(img_thres)
-
-        img_array = cv.UMat.get(img_bounded_final)
-
-        st.image(img_array)
-
-resized_imgs = []
-with image_characters:
-    if img_bounded_final!=None:
-
-        img_thres = cv.UMat.get(img_thres)
-        for k in range(len(x)):
-            i = img_thres[y[k]-2:ym[k]+2, x[k]-2:xm[k]+2]
-            constant= cv.copyMakeBorder(i,10,10,10,10,cv.BORDER_CONSTANT,value=[0,0,0])
-            resize_i = cv.resize(constant,(28,28))
-            resized_imgs.append(resize_i)
-        resized_imgs.reverse()
-
-        cols = cycle(st.columns(10)) # st.columns here since it is out of beta at the time I'm writing this
-        for idx, filteredImage in enumerate(resized_imgs):
-            next(cols).image(filteredImage,caption = idx)
+#         img_gray = cv.cvtColor(cv.UMat(img_shadow_removed), cv.COLOR_BGR2GRAY)
 
 
-nums = [n for n in range(len(resized_imgs))]
-with final_box:
-    with st.form('my_form'):
-        idxs = st.multiselect('Choose the index of character to remove',nums)
-        submitted = st.form_submit_button('Submit')
+#         ret,img_thres = cv.threshold(img_gray,thresh,255, cv.THRESH_BINARY_INV)
 
-    if submitted:
-        idxs.sort()
-        count = 0
-        for i in idxs:
-            resized_imgs.pop(i-count)
-            count+=1
+#         img_thres = cv.medianBlur(img_thres,blur)
+#         # img_thres4=img_dilation = cv.dilate(img_thres4, np.ones((2,2), np.uint8), iterations=1)
 
-        cols = cycle(st.columns(10)) # st.columns here since it is out of beta at the time I'm writing this
-        for idx, filteredImage in enumerate(resized_imgs):
-            next(cols).image(filteredImage,caption = idx)
+#         img_thres = rotate(img_thres,degree)
+
+#         img_bounded_final, x, xm, y, ym = bounding(img_thres)
+
+#         img_array = cv.UMat.get(img_bounded_final)
+
+#         st.image(img_array)
+
+# resized_imgs = []
+# with image_characters:
+#     if img_bounded_final!=None:
+
+#         img_thres = cv.UMat.get(img_thres)
+#         for k in range(len(x)):
+#             i = img_thres[y[k]-2:ym[k]+2, x[k]-2:xm[k]+2]
+#             constant= cv.copyMakeBorder(i,10,10,10,10,cv.BORDER_CONSTANT,value=[0,0,0])
+#             resize_i = cv.resize(constant,(28,28))
+#             resized_imgs.append(resize_i)
+#         resized_imgs.reverse()
+
+#         cols = cycle(st.columns(10)) # st.columns here since it is out of beta at the time I'm writing this
+#         for idx, filteredImage in enumerate(resized_imgs):
+#             next(cols).image(filteredImage,caption = idx)
+
+
+# nums = [n for n in range(len(resized_imgs))]
+# with final_box:
+#     with st.form('my_form'):
+#         idxs = st.multiselect('Choose the index of character to remove',nums)
+#         submitted = st.form_submit_button('Submit')
+
+#     if submitted:
+#         idxs.sort()
+#         count = 0
+#         for i in idxs:
+#             resized_imgs.pop(i-count)
+#             count+=1
+
+#         cols = cycle(st.columns(10)) # st.columns here since it is out of beta at the time I'm writing this
+#         for idx, filteredImage in enumerate(resized_imgs):
+#             next(cols).image(filteredImage,caption = idx)
         
 
 
-        file_names = ['9','8','7','6','5','4','3','2','1','0']
-        file_names.reverse()
-        count = 0
-        file_no = 0
-        zipObj = ZipFile(directory+'.zip','w')
-        for i,img in enumerate(resized_imgs):
-            if count == 10:
-                count = 0
-                file_no += 1
-            data = Image.fromarray(img)
-            data.save(file_name+'_'+file_names[file_no]+str(count)+'.jpg')
-            zipObj.write(file_name+'_'+file_names[file_no]+str(count)+'.jpg',data)
-            count+=1
+#         file_names = ['9','8','7','6','5','4','3','2','1','0']
+#         file_names.reverse()
+#         count = 0
+#         file_no = 0
+#         zipObj = ZipFile(directory+'.zip','w')
+#         for i,img in enumerate(resized_imgs):
+#             if count == 10:
+#                 count = 0
+#                 file_no += 1
+#             data = Image.fromarray(img)
+#             data.save(file_name+'_'+file_names[file_no]+str(count)+'.jpg')
+#             zipObj.write(file_name+'_'+file_names[file_no]+str(count)+'.jpg',data)
+#             count+=1
         
-        zipObj.close()
+#         zipObj.close()
 
 
-        with open((directory+'.zip'), "rb") as fp:
-            btn = st.download_button(
-                label="Download ZIP",
-                data=fp,
-                file_name=directory+'.zip',
-                mime="application/zip"
-            )
+#         with open((directory+'.zip'), "rb") as fp:
+#             btn = st.download_button(
+#                 label="Download ZIP",
+#                 data=fp,
+#                 file_name=directory+'.zip',
+#                 mime="application/zip"
+#             )
