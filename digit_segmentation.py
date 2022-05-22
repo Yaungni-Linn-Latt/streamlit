@@ -120,9 +120,9 @@ with image_box:
         # if not os.path.exists(path):
         #     os.mkdir(path)
 
-        result_planes = []
+#         result_planes = []
 
-        rgb_planes = cv.split(img)
+#         rgb_planes = cv.split(img)
         
         st.image(img)
 
