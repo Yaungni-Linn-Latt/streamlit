@@ -124,7 +124,7 @@ with image_box:
 #         result_planes = []
 
 #         rgb_planes = cv.split(img)
-        
+        img = cv.UMat.get(img)
         st.image(img)
 
 #         for plane in rgb_planes:
